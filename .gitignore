@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+.claude/
+
+# Claude Code project notes (keep local only)
+# lectureBuilder
+lecture/
+.wrangler/
+node_modules/

@@ -1,0 +1,244 @@
+{
+  "summary": "점과 선으로 세상을 표현하는 <b>그래프 데이터베이스 Neo4j</b>를 처음부터 배우는 입문 강좌입니다. <b>온톨로지</b>로 개념과 관계를 설계하고, <b>Cypher</b> 질의로 <b>지식그래프</b>를 만들고 탐색하며, 마지막에는 Python으로 Neo4j를 다뤄 추천 · 질의응답 미니 프로젝트까지 완성합니다. 브라우저 Python으로 그래프의 원리를 직접 실행해 보고, Neo4j 코드는 무료 클라우드(AuraDB Free)에서 따라 합니다.",
+  "parts": [
+    { "id": 1, "title": "Part 1. 그래프와 온톨로지 이해하기", "desc": "표 대신 점과 선으로 생각하기 — 그래프 모델과 온톨로지 · 지식그래프의 기본 개념" },
+    { "id": 2, "title": "Part 2. Neo4j와 Cypher 익히기", "desc": "Neo4j 를 설치하고 Cypher 로 노드와 관계를 만들고 · 찾고 · 고치는 법" },
+    { "id": 3, "title": "Part 3. 지식그래프 만들고 활용하기", "desc": "데이터를 지식그래프로 옮기고, Python 으로 질의 · 추론 · 분석 · 추천까지" }
+  ],
+  "chapters": [
+    {
+      "id": "ch01", "no": "01", "part": 1, "title": "그래프로 세상 보기", "icon": "🕸️",
+      "summary": "친구 관계 · 지하철 노선처럼 '연결'이 중요한 데이터를 노드와 관계로 표현하는 그래프 모델을 배우고, 표(관계형 DB)와 무엇이 다른지 비교합니다.",
+      "sections": [
+        {
+          "title": "점과 선: 그래프 데이터 모델",
+          "topics": [
+            "그래프란? 노드(점) · 관계(선) — 지하철 노선도 · SNS 친구 · 가계도 예시 그림",
+            "속성 그래프(Labeled Property Graph): 레이블(:Person), 속성(name, age), 관계 타입(:KNOWS)과 방향",
+            "방향 그래프 vs 무방향 그래프, 차수(degree)와 이웃의 뜻",
+            "Python 딕셔너리 · 리스트로 그래프 표현하기 — 인접 리스트(adjacency list)와 간선 목록(edge list)",
+            "matplotlib 로 노드 좌표를 찍고 선을 그어 작은 그래프 그려 보기"
+          ],
+          "practice": "우리 반 친구 6명의 '아는 사이' 관계를 인접 리스트로 만들고, 친구가 가장 많은 사람과 그 친구 목록을 출력한 뒤 그림으로 그리기"
+        },
+        {
+          "title": "왜 그래프 데이터베이스인가",
+          "topics": [
+            "같은 데이터를 표(관계형 DB)로 저장하기: 사람 테이블 · 친구 테이블 · JOIN 의 개념 (pandas DataFrame 으로 시연)",
+            "'친구의 친구의 친구'를 찾을 때 표는 JOIN 이 늘어나고, 그래프는 선을 따라가기만 하면 된다는 차이",
+            "pandas merge 를 반복하는 코드 vs 인접 리스트를 따라가는 코드 비교",
+            "그래프 DB 가 잘 쓰이는 곳: 추천, 사기 탐지, 지식그래프, 네트워크 · 공급망 관리",
+            "Neo4j 소개: 대표적인 그래프 DB, Cypher 질의 언어, 무료 버전(AuraDB Free · Neo4j Desktop)"
+          ],
+          "practice": "같은 친구 데이터를 DataFrame 과 인접 리스트로 각각 만들고, '2단계 건너 아는 사람'을 두 방식으로 구해 결과와 코드 길이 비교하기"
+        }
+      ]
+    },
+    {
+      "id": "ch02", "no": "02", "part": 1, "title": "온톨로지와 지식그래프", "icon": "🧠",
+      "summary": "개념(클래스) · 사례(인스턴스) · 관계를 정해 두는 '지식의 설계도' 온톨로지를 이해하고, 이를 바탕으로 사실들을 연결한 지식그래프를 직접 설계합니다.",
+      "sections": [
+        {
+          "title": "온톨로지: 지식의 설계도",
+          "topics": [
+            "온톨로지란? 어떤 분야에 '무엇이 있고 서로 어떤 관계인가'를 약속한 설계도 — 도서관 분류 · 생물 분류 비유",
+            "클래스(개념)와 인스턴스(실제 사례): Person · Movie 와 '봉준호' · '기생충'",
+            "클래스 계층(is-a, subClassOf): 감독 ⊂ 사람, 스릴러 ⊂ 장르 — 트리 그림",
+            "속성(데이터 속성)과 관계(객체 속성), 정의역(domain) · 치역(range)의 쉬운 설명",
+            "Python 딕셔너리로 작은 영화 온톨로지(클래스 · 상위 클래스 · 허용 관계) 정의하고 출력하기"
+          ],
+          "practice": "'학교' 분야 온톨로지 만들기 — 클래스(사람 · 학생 · 교사 · 과목 · 반)와 계층, 관계(가르친다 · 수강한다 · 소속된다)를 딕셔너리로 정의하기"
+        },
+        {
+          "title": "트리플과 지식그래프",
+          "topics": [
+            "트리플(주어 – 술어 – 목적어)로 사실 표현하기: (봉준호, 감독했다, 기생충)",
+            "트리플을 모으면 지식그래프가 된다 — 트리플 목록을 그래프 그림으로 바꾸기",
+            "RDF 방식 vs 속성 그래프(Neo4j) 방식 비교: 속성을 노드에 담는 법, 관계에 속성(역할 · 연도)을 붙이는 법",
+            "온톨로지로 트리플 검사하기: 관계의 domain/range 를 어긴 잘못된 사실 찾기 (Python)",
+            "구글 지식 패널 · 위키데이터 등 실제 지식그래프 사례"
+          ],
+          "practice": "영화 5편 · 인물 8명에 대한 트리플 20개를 리스트로 만들고, 온톨로지 규칙 위반 트리플을 찾아낸 뒤 matplotlib 으로 지식그래프 그리기"
+        }
+      ]
+    },
+    {
+      "id": "ch03", "no": "03", "part": 2, "title": "Neo4j 시작하기", "icon": "🚀",
+      "summary": "Neo4j AuraDB Free(클라우드) 또는 Neo4j Desktop 을 준비하고, Neo4j Browser 에서 첫 노드와 관계를 만들어 화면으로 확인합니다. 온톨로지를 그래프 스키마로 옮기는 화이트보드 모델링도 연습합니다.",
+      "sections": [
+        {
+          "title": "Neo4j 설치와 Browser 둘러보기",
+          "topics": [
+            "Neo4j 제품 구성: 데이터베이스, Browser, Bloom, AuraDB(클라우드), Desktop(로컬)",
+            "AuraDB Free 인스턴스 만들기 단계별 화면 안내 — 접속 주소(URI) · 사용자 · 비밀번호 저장하기",
+            "Neo4j Browser 화면 구성: 명령줄, 결과 그래프 · 표 · 텍스트 보기, 사이드바(노드 레이블 · 관계 타입 목록)",
+            "첫 Cypher: CREATE (:Person {name:'홍길동'}) 와 MATCH (n) RETURN n",
+            "내장 예제 :play movies 실행해 영화 그래프 둘러보기, 모두 지우기 MATCH (n) DETACH DELETE n (주의 사항)"
+          ],
+          "practice": "AuraDB Free(또는 Desktop)에 접속해 자기 자신과 좋아하는 영화 2편을 노드로 만들고, LIKES 관계로 연결해 그래프 화면 캡처하기"
+        },
+        {
+          "title": "그래프 모델링: 온톨로지를 Neo4j 로",
+          "topics": [
+            "모델링 순서: 질문 먼저 정하기 → 명사는 노드 · 동사는 관계 · 형용사는 속성",
+            "온톨로지 클래스 → 레이블, 객체 속성 → 관계 타입, 데이터 속성 → 노드 속성으로 대응시키기 (대응표)",
+            "다중 레이블로 클래스 계층 표현하기: (:Person:Director)",
+            "이름 짓기 규칙: 레이블은 PascalCase, 관계는 UPPER_SNAKE_CASE, 속성은 camelCase",
+            "흔한 모델링 실수: 속성으로 둘 것을 노드로 · 노드로 둘 것을 속성으로 만든 경우 비교 그림",
+            "Python 으로 '설계도(스키마) 그림' 그리기 — 레이블을 상자로, 관계를 화살표로"
+          ],
+          "practice": "2장에서 만든 영화 온톨로지를 Neo4j 그래프 모델(레이블 · 관계 · 속성 대응표)로 바꾸고, 이 모델로 답할 질문 5개 적기"
+        }
+      ]
+    },
+    {
+      "id": "ch04", "no": "04", "part": 2, "title": "Cypher 기초: 만들고 찾기", "icon": "🔍",
+      "summary": "그림처럼 생긴 질의 언어 Cypher 로 노드와 관계를 만들고(CREATE), 패턴으로 찾고(MATCH), 조건을 걸어(WHERE) 원하는 결과만 돌려받는(RETURN) 방법을 익힙니다.",
+      "sections": [
+        {
+          "title": "CREATE 와 패턴 문법",
+          "topics": [
+            "Cypher 는 ASCII 그림: (노드) -[:관계]-> (노드) 읽는 법",
+            "노드 패턴 (변수:레이블 {속성}) · 관계 패턴 -[변수:타입 {속성}]-> 해부도",
+            "CREATE 로 노드 여러 개와 관계 한 번에 만들기, 관계에 속성 붙이기 (ACTED_IN {role:'기택'})",
+            "자료형: 문자열 · 정수 · 실수 · 불리언 · 리스트 · 날짜(date())",
+            "브라우저 Python 으로 '미니 그래프 저장소' 만들기: nodes · rels 리스트에 CREATE 를 흉내 내어 원리 이해하기"
+          ],
+          "practice": "영화 3편 · 배우 5명 · 감독 2명과 ACTED_IN · DIRECTED 관계를 한 번의 CREATE 문으로 만들고, 같은 데이터를 Python 미니 저장소에도 넣어 보기"
+        },
+        {
+          "title": "MATCH · WHERE · RETURN",
+          "topics": [
+            "MATCH 로 패턴 찾기: 특정 사람이 출연한 영화, 특정 영화의 감독",
+            "WHERE 조건: 비교 연산, AND/OR/NOT, STARTS WITH · CONTAINS, IN 리스트, IS NULL",
+            "RETURN 꾸미기: AS 별칭, DISTINCT, ORDER BY, LIMIT · SKIP",
+            "방향이 있는 패턴과 방향을 무시하는 패턴 (-[]- ) 의 차이",
+            "Python 으로 MATCH 원리 체험: 미니 저장소에서 (Person)-[:ACTED_IN]->(Movie) 패턴을 반복문으로 찾고 pandas 표로 출력",
+            "Neo4j Browser 결과의 Graph · Table · Text 보기 해석하기"
+          ],
+          "practice": "영화 그래프에서 '2000년 이후 개봉한 영화에 출연한 배우 이름을 가나다순으로 10명' 등 질문 5개를 Cypher 로 작성하고, 그중 2개는 Python 미니 저장소로도 같은 답 구하기"
+        }
+      ]
+    },
+    {
+      "id": "ch05", "no": "05", "part": 2, "title": "Cypher 활용: 고치고 세고 따라가기", "icon": "🛠️",
+      "summary": "MERGE · SET · DELETE 로 그래프를 안전하게 고치고, 집계 함수로 통계를 내며, 여러 단계의 관계를 따라가는 경로 질의로 그래프 DB 의 진짜 힘을 경험합니다.",
+      "sections": [
+        {
+          "title": "MERGE · SET · DELETE 와 집계",
+          "topics": [
+            "CREATE 를 두 번 하면 생기는 중복 문제 → MERGE 로 '있으면 찾고 없으면 만들기'",
+            "ON CREATE SET · ON MATCH SET 으로 처음 만들 때와 다시 만날 때 다르게 처리",
+            "SET 으로 속성 추가 · 수정, 레이블 추가, REMOVE 로 속성 · 레이블 지우기",
+            "DELETE 와 DETACH DELETE 차이 (관계가 남아 있으면 지울 수 없는 이유)",
+            "집계: count · sum · avg · min · max · collect, 그룹 기준이 자동으로 정해지는 규칙",
+            "WITH 로 중간 결과 넘기기: '출연작이 3편 이상인 배우'",
+            "같은 집계를 pandas groupby 로 해 보며 결과 비교"
+          ],
+          "practice": "중복이 섞인 출연 목록을 MERGE 로 넣어 중복 없이 저장하고, 배우별 출연 편수 · 장르별 평균 평점을 Cypher 와 pandas 로 각각 구하기"
+        },
+        {
+          "title": "경로 탐색과 가변 길이 관계",
+          "topics": [
+            "여러 단계 패턴: (a)-[:ACTED_IN]->(m)<-[:ACTED_IN]-(b) 로 '함께 출연한 배우' 찾기",
+            "가변 길이 관계 -[:KNOWS*1..3]-> 와 '친구의 친구' 질의",
+            "경로 변수 p = (...) 와 length(p), nodes(p), relationships(p)",
+            "shortestPath · allShortestPaths 로 두 사람 사이 최단 연결 찾기 ('케빈 베이컨의 6단계')",
+            "Python 으로 너비 우선 탐색(BFS) 직접 구현해 최단 경로 원리 이해하고 경로를 그림으로 강조 표시",
+            "OPTIONAL MATCH 로 관계가 없어도 결과 남기기"
+          ],
+          "practice": "배우 협업 그래프에서 두 배우 사이의 최단 연결을 Cypher shortestPath 와 Python BFS 로 각각 구하고, 경로를 matplotlib 그래프에 빨간 선으로 표시하기"
+        }
+      ]
+    },
+    {
+      "id": "ch06", "no": "06", "part": 3, "title": "데이터를 지식그래프로", "icon": "📥",
+      "summary": "표 형식(CSV) 데이터를 정제해 온톨로지에 맞는 노드와 관계로 바꾸고, LOAD CSV 와 제약 조건 · 인덱스를 사용해 Neo4j 에 깔끔한 지식그래프를 구축합니다.",
+      "sections": [
+        {
+          "title": "CSV 를 트리플로: 데이터 정제와 변환",
+          "topics": [
+            "원본 표 살펴보기: 영화 · 인물 · 출연 CSV (assets 의 작은 예제 파일) 를 pandas 로 읽기",
+            "정제: 결측값 · 공백 · 중복 이름 처리, 장르 '드라마|범죄' 처럼 한 칸에 여러 값 나누기(split · explode)",
+            "표의 행 → 노드, 외래키 · 여러 값 칸 → 관계로 바꾸는 규칙 (변환 대응표 그림)",
+            "온톨로지 규칙(domain/range, 필수 속성)으로 변환 결과 검증하기",
+            "변환 결과를 nodes.csv · rels.csv 로 저장하고, 이 내용을 그대로 쓰는 Cypher 문 자동 생성(Python 문자열)"
+          ],
+          "practice": "영화 · 인물 CSV 를 정제해 노드 표와 관계 표로 나누고, 온톨로지 위반 행을 골라낸 뒤 Cypher CREATE/MERGE 문을 자동으로 만들어 출력하기"
+        },
+        {
+          "title": "LOAD CSV · 제약 조건 · 인덱스",
+          "topics": [
+            "LOAD CSV WITH HEADERS FROM 'URL' AS row 로 CSV 불러오기 (GitHub raw 주소 · import 폴더)",
+            "row 의 값 형 변환: toInteger · toFloat · split · date",
+            "MERGE 와 LOAD CSV 를 함께 써서 노드 → 관계 순서로 적재하기",
+            "고유 제약 조건 CREATE CONSTRAINT ... REQUIRE m.id IS UNIQUE 와 중복 방지",
+            "인덱스와 빠른 검색, SHOW CONSTRAINTS · SHOW INDEXES, 대용량 적재 시 CALL { } IN TRANSACTIONS 소개",
+            "db.schema.visualization() 으로 완성된 스키마를 확인하고 3장의 설계도와 비교"
+          ],
+          "practice": "앞 교시에서 만든 CSV 를 LOAD CSV 로 AuraDB 에 적재하고 제약 조건을 건 뒤, 스키마 시각화 화면이 온톨로지 설계도와 같은지 확인하기"
+        }
+      ]
+    },
+    {
+      "id": "ch07", "no": "07", "part": 3, "title": "Python 으로 지식그래프 다루기와 추론", "icon": "🐍",
+      "summary": "공식 neo4j Python 드라이버로 질의 결과를 pandas 와 matplotlib 로 가져오고, 온톨로지의 클래스 계층 · 전이 관계를 이용해 그래프에 숨은 새 사실을 추론합니다.",
+      "sections": [
+        {
+          "title": "neo4j 드라이버와 pandas 연동",
+          "topics": [
+            "로컬 PC 준비: pip install neo4j pandas, 접속 정보(URI · 사용자 · 비밀번호) 관리 (.env 파일)",
+            "GraphDatabase.driver 와 driver.execute_query 로 Cypher 실행하기 (로컬 PC 에서 실행)",
+            "매개변수($name)로 안전하게 값 넘기기 — 문자열 붙이기가 위험한 이유",
+            "결과를 레코드 → 딕셔너리 → pandas DataFrame 으로 바꾸기, result_transformer_ 소개",
+            "브라우저 실습: 미리 받아 둔 결과(JSON/CSV)를 DataFrame 으로 만들어 막대그래프 · 그래프 그림 그리기",
+            "Python 으로 데이터 쓰기: 반복문 대신 UNWIND $rows 로 한 번에 적재하기"
+          ],
+          "practice": "드라이버로 '장르별 영화 수 · 평균 평점'을 가져와 DataFrame 으로 정리하고 막대그래프로 그리는 스크립트 완성하기 (브라우저에서는 제공된 결과 데이터로 같은 그래프 그리기)"
+        },
+        {
+          "title": "온톨로지 추론: 숨은 사실 찾기",
+          "topics": [
+            "추론이란? 명시된 사실과 규칙에서 새 사실을 이끌어 내기 — '스릴러는 장르의 하위 개념이므로 …'",
+            "클래스 계층 추론: SUBCLASS_OF*0.. 경로를 따라 '모든 범죄 영화(하위 장르 포함)' 찾기",
+            "전이 관계 추론: 위치 PART_OF (동네 → 구 → 시 → 나라), 가변 길이 경로로 계산하기",
+            "역관계 · 대칭 관계 규칙과 MERGE 로 추론 결과를 관계로 저장하기 (INFERRED 표시 속성)",
+            "Python 으로 규칙 엔진 흉내 내기: 트리플 집합에 규칙을 반복 적용해 더 이상 새 사실이 없을 때까지(고정점) 추론",
+            "더 알아보기: RDF/OWL 온톨로지를 Neo4j 로 가져오는 neosemantics(n10s) 플러그인 개요"
+          ],
+          "practice": "장르 계층 · 지역 계층 트리플에 subClassOf · partOf 전이 규칙을 적용하는 Python 추론기를 만들어 새로 생긴 사실을 출력하고, 같은 질문을 Cypher 가변 길이 경로로 작성하기"
+        }
+      ]
+    },
+    {
+      "id": "ch08", "no": "08", "part": 3, "title": "그래프 분석과 지식그래프 미니 프로젝트", "icon": "🏆",
+      "summary": "중심성 · 커뮤니티 · 유사도 같은 그래프 분석으로 중요한 노드와 비슷한 노드를 찾고, 지금까지 배운 내용을 모아 영화 추천 · 질의응답 지식그래프 미니 프로젝트를 완성합니다.",
+      "sections": [
+        {
+          "title": "그래프 분석과 추천",
+          "topics": [
+            "연결 중심성(차수) · 페이지랭크의 직관 — '많이 · 중요한 곳과 연결된 노드가 중요하다'",
+            "Python 으로 차수 중심성과 간단한 페이지랭크 반복 계산 직접 구현해 보기 (numpy)",
+            "커뮤니티(무리) 찾기의 개념과 연결 요소(connected components) 계산",
+            "유사도: 공통 이웃 수 · 자카드 유사도로 '나와 취향이 비슷한 사람' 찾기",
+            "Cypher 협업 필터링 추천 질의: '나와 같은 영화를 좋아한 사람이 좋아한 다른 영화'",
+            "더 알아보기: Neo4j Graph Data Science(GDS) 라이브러리 gds.pageRank · gds.louvain 소개"
+          ],
+          "practice": "사용자 – 영화 평점 그래프에서 자카드 유사도로 비슷한 사용자를 찾고, 그들이 좋아한 영화를 추천 목록으로 출력한 뒤 같은 추천을 Cypher 질의로 작성하기"
+        },
+        {
+          "title": "미니 프로젝트: 나만의 지식그래프",
+          "topics": [
+            "프로젝트 흐름 정리: 주제 선정 → 질문 정하기 → 온톨로지 설계 → 데이터 준비 → 적재 → 질의 · 분석 → 발표",
+            "주제 예시: 우리 동네 맛집 · 좋아하는 아이돌 · 역사 인물 · 도서관 책 지식그래프",
+            "질문을 Cypher 로 바꾸는 템플릿 만들기: '○○ 에 출연한 배우는?' → MATCH 패턴",
+            "Python 으로 간단한 질의응답 봇 만들기: 질문 유형을 키워드로 고르고 미니 지식그래프에서 답 찾기 (input() 사용)",
+            "결과 발표하기: 스키마 그림 · 대표 질의 3개 · 분석 결과 그래프",
+            "더 알아보기: 지식그래프 + 대규모 언어 모델(GraphRAG)로 질문에 답하는 흐름 소개"
+          ],
+          "practice": "자기만의 주제로 노드 20개 이상 지식그래프를 설계 · 구축하고, 질문 3개에 답하는 Cypher 질의와 Python 질의응답 봇을 만들어 발표하기"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+/* 강좌 색상 — lectureBuilder 디자인 설정으로 생성 (재생성 시 덮어씀) */
+:root {
+  --accent: #4f46e5; --accent-soft: #eae9fc;
+  --accent2: #a16207; --accent2-soft: #f2e9dc;
+}
+:root[data-theme="dark"] {
+  --accent: #8d87ee; --accent-soft: #1d1f47;
+}
